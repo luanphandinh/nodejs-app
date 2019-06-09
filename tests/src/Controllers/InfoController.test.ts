@@ -1,5 +1,5 @@
 import { Response } from 'supertest';
-import app from '@tests/app';
+import app from '@tests/appTest';
 
 describe('GET /', () => {
   it('should return 200 OK', () => {

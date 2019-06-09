@@ -10,7 +10,10 @@
     "noImplicitAny": true,
     "target": "es6",
     "outDir": "dist",
-    "rootDir": "src",
+    "rootDirs": [
+      "src",
+      "utils"
+    ],
     "sourceMap": true,
     "baseUrl": ".",
     "moduleResolution": "node",
@@ -20,10 +23,14 @@
       "*": [
         "node_modules/@types/*",
         "./src/types/*",
-        "./tests/types/*"
+        "./tests/types/*",
+        "./utils/types/*"
       ],
       "@src/*": [
         "src/*"
+      ],
+      "@utils/*": [
+        "utils/*"
       ],
       "@tests/*": [
         "tests/*"

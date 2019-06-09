@@ -3,14 +3,22 @@ import * as dotenv from 'dotenv';
 import * as bodyParser from 'body-parser';
 
 import routes from '@src/routes';
+import Handlers from '@utils/Handlers';
 
 dotenv.config();
 
-const app: express.Express = express();
-app.set('port', process.env.PORT || 3000);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+export class App {
+  public static getApp(): express.Express {
+    const app: express.Express = express();
+    app.set('port', process.env.PORT || 3000);
+    app.use(bodyParser.json());
+    app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(routes);
+    app.use(routes);
+    app.use(Handlers.error);
 
-export default app;
+    return app;
+  }
+}
+
+export default App.getApp();

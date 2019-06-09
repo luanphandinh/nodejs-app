@@ -6,6 +6,7 @@
   },
   "moduleNameMapper": {
     "^@src/(.*)$": "<rootDir>/src/$1",
+    "^@utils/(.*)$": "<rootDir>/utils/$1",
     "^@tests/(.*)$": "<rootDir>/tests/$1"
   },
   "moduleFileExtensions": [

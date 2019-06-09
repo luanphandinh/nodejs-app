@@ -26,6 +26,7 @@ module.exports = {
   resolve: {
     alias: {
       '@src': helpers.root('src'),
+      '@utils': helpers.root('utils'),
     },
     extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
   },
