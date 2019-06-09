@@ -1,9 +1,9 @@
-# nodejs-template
+# nodejs-template [![Build Status](https://travis-ci.org/luanphandinh/nodejs-template.svg?branch=master)](https://travis-ci.org/luanphandinh/nodejs-template)
 simple express js app
 
 ## Development
-`yarn dev`
+`npm run dev`
 
 
 ## Test
-`yarn test`
+`npm run test`
