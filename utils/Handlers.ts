@@ -2,6 +2,14 @@ import { Request, Response } from 'express';
 import { StatusError, Err400, Err404 } from './Errors';
 
 export default class Handlers {
+  static async(fn: Function) {
+    return function (...args: any[]) {
+      const func = fn(...args);
+      const next = args[args.length - 1];
+      return Promise.resolve(func).catch(next);
+    };
+  }
+
   static error(err: StatusError, req: Request, res: Response, next: Function) {
     const message = {
       message: err.message,

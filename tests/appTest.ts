@@ -25,6 +25,7 @@ export class AppTest {
   }
 
   public listen() {
+    // Handling errors always at the end of app.use
     this.app.use(Handlers.error);
     if (!this.server) {
       this.server = this.app.listen(9091);
