@@ -1,0 +1,20 @@
+dist/
+.vscode
+.idea
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
+jspm_packages
+package-lock.json
+yarn.lock
+
+# Optional npm cache directory
+.npm
+.nyc_output/
+
+coverage

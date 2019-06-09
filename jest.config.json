@@ -1,0 +1,37 @@
+{
+  "globals": {
+    "ts-jest": {
+      "tsConfigFile": "tsconfig.json"
+    }
+  },
+  "moduleNameMapper": {
+    "^@lupa/(.*)$": "<rootDir>/src/$1"
+  },
+  "moduleFileExtensions": [
+    "ts",
+    "js",
+    "json"
+  ],
+  "moduleDirectories": [
+    "node_modules",
+    "src"
+  ],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+  },
+  "testMatch": [
+    "**/tests/**/*.test.(ts|js)"
+  ],
+  "testEnvironment": "node",
+  "collectCoverage": true,
+  "collectCoverageFrom": [
+    "**/*.{ts,jsx}",
+    "!**/tests/**",
+    "!**/src/server.ts",
+    "!**/node_modules/**",
+    "!**/vendor/**",
+    "!**/coverage/**",
+    "!**/config/**",
+    "!**/webpack.config.js"
+  ]
+}
