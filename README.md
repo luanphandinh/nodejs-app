@@ -1,2 +1,5 @@
 # nodejs-template
-simple expressjs app
+simple express js app
+
+## Development
+`yarn dev`
