@@ -8,7 +8,7 @@
     "test": "jest --config jest.config.json --forceExit --verbose",
     "clean": "rimraf dist && rimraf coverage",
     "build": "npm run clean && node_modules/.bin/webpack --config webpack.config.js",
-    "postinstall": "yarn run build",
+    "postinstall": "npm run build",
     "dev:server": "nodemon dist/server.js",
     "dev:watch-src": "webpack -w",
     "dev": "concurrently \"yarn:dev:*\""

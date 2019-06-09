@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - "stable"
+
+jobs:
+  include:
+    - stage: build
+      script: npm install
+    - stage: test
+      script: npm test
