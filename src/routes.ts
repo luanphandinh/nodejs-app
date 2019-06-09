@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import InfoController from '@lupa/Controllers/InfoController';
+import InfoController from '@src/Controllers/InfoController';
 
 const routes = Router();
 routes.get('/', InfoController.index);

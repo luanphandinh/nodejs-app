@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as dotenv from 'dotenv';
 import * as bodyParser from 'body-parser';
 
-import routes from '@lupa/routes';
+import routes from '@src/routes';
 
 dotenv.config();
 

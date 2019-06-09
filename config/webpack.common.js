@@ -25,7 +25,7 @@ module.exports = {
 
   resolve: {
     alias: {
-      '@lupa': helpers.root('src'),
+      '@src': helpers.root('src'),
     },
     extensions: ['.webpack.js', '.web.js', '.ts', '.tsx', '.js'],
   },

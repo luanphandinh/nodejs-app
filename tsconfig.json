@@ -19,10 +19,14 @@
     "paths": {
       "*": [
         "node_modules/@types/*",
-        "./src/types/*"
+        "./src/types/*",
+        "./tests/types/*"
       ],
-      "@lupa/*": [
+      "@src/*": [
         "src/*"
+      ],
+      "@tests/*": [
+        "tests/*"
       ]
     }
   }
