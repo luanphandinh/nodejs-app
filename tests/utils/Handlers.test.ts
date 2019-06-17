@@ -2,14 +2,14 @@ import { Response as TestResponse } from 'supertest';
 import { Request, Response } from "express";
 
 import app from '@tests/appTest';
-import { Err400, Err404 } from '@utils/Errors';
 import { AsyncHandler } from '@utils/AsyncHander';
+import { HttpError } from '@utils/HttpError';
 
 describe('error', () => {
   it('should return 400 Bad Request', () => {
     return app
       .withRoute('/400', (req: Request, res: Response): Response => {
-        throw new Err400('Invalid Params');
+        throw new HttpError(400, 'Invalid Params');
       })
       .listen()
       .get('/400')
@@ -24,7 +24,7 @@ describe('error', () => {
   it('should return 404 Not Found', () => {
     return app
       .withRoute('/404', (req: Request, res: Response): Response => {
-        throw new Err404('Bad Request');
+        throw new HttpError(404, 'Bad Request');
       })
       .listen()
       .get('/404')
@@ -65,7 +65,7 @@ describe('async', () => {
   it('should handle async error correctly', () => {
     return app
       .withRoute('/async400', (new AsyncHandler).async(async (req: Request, res: Response): Promise<Response> => {
-        throw new Err400('Invalid Params');
+        throw new HttpError(400, 'Invalid Params');
       }))
       .listen()
       .get('/async400')
