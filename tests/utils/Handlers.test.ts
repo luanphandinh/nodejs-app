@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 
 import app from '@tests/appTest';
 import { Err400, Err404 } from '@utils/Errors';
-import Handlers from '@utils/Handlers';
+import { AsyncHandler } from '@utils/AsyncHander';
 
 describe('error', () => {
   it('should return 400 Bad Request', () => {
@@ -53,7 +53,7 @@ describe('error', () => {
 describe('async', () => {
   it('should handle async response', () => {
     return app
-      .withRoute('/async', Handlers.async(async (req: Request, res: Response): Promise<Response> => res.json({ async: 'work'})))
+      .withRoute('/async', (new AsyncHandler).async(async (req: Request, res: Response): Promise<Response> => res.json({ async: 'work'})))
       .listen()
       .get('/async')
       .expect(200)
@@ -64,7 +64,7 @@ describe('async', () => {
 
   it('should handle async error correctly', () => {
     return app
-      .withRoute('/async400', Handlers.async(async (req: Request, res: Response): Promise<Response> => {
+      .withRoute('/async400', (new AsyncHandler).async(async (req: Request, res: Response): Promise<Response> => {
         throw new Err400('Invalid Params');
       }))
       .listen()

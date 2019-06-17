@@ -1,16 +1,12 @@
 import { Request, Response } from 'express';
 import { StatusError, Err400, Err404 } from './Errors';
 
-export default class Handlers {
-  static async(fn: Function) {
-    return function (...args: any[]) {
-      const func = fn(...args);
-      const next = args[args.length - 1];
-      return Promise.resolve(func).catch(next);
-    };
-  }
+export interface IErrorHandler {
+  handle(err: StatusError, req: Request, res: Response, next: Function): Response;
+}
 
-  static error(err: StatusError, req: Request, res: Response, next: Function) {
+export class ErrorHandler implements IErrorHandler {
+  public handle(err: StatusError, req: Request, res: Response, next: Function) {
     const message = {
       message: err.message,
       errors: err.errors,
