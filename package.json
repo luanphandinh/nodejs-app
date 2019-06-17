@@ -4,7 +4,7 @@
   "description": "Simple express-js app template",
   "main": "./dist/server.js",
   "scripts": {
-    "server": "node dist/server.js",
+    "start": "node dist/server.js",
     "test": "jest --config jest.config.json --forceExit --verbose",
     "clean": "rimraf dist && rimraf coverage",
     "build": "npm run clean && node_modules/.bin/webpack --config webpack.config.js",
