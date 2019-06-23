@@ -1,7 +1,7 @@
 const helpers = require('./helpers');
 
 const fs = require('fs');
-nodeModules = {};
+const nodeModules = {};
 
 fs.readdirSync('node_modules')
   .filter(function(x) {
@@ -12,6 +12,8 @@ fs.readdirSync('node_modules')
   });
 
 module.exports = {
+  devtool: 'source-map',
+
   entry: {
     'server': helpers.root('src', 'server.ts'),
   },
