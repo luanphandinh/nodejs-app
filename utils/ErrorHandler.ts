@@ -1,9 +1,5 @@
 import { Request, Response } from 'express';
-import { IHttpError } from './HttpError';
-
-export interface IErrorHandler {
-  handle(err: IHttpError, req: Request, res: Response, next: Function): Response;
-}
+import { IErrorHandler, IHttpError } from './Interfaces';
 
 export class ErrorHandler implements IErrorHandler {
   public handle(err: IHttpError, req: Request, res: Response, next: Function) {

@@ -1,6 +1,4 @@
-export interface IAsyncHandler {
-  async(fn: Function): Function;
-}
+import { IAsyncHandler } from './Interfaces';
 
 export class AsyncHandler implements IAsyncHandler{
   public async(fn: Function): Function {
