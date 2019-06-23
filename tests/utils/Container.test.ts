@@ -1,11 +1,33 @@
 import { Container } from '@utils/Container';
 
 describe('Container', () => {
-  it('resolve entries', () => {
-    const container: Container = new Container();
-    container.register<any>('success', () => 'registered');
+  class HelloWorld {
+    public say = () => 'Hello World!';
+  }
 
-    expect(container.get<any>('success')()).toEqual('registered');
-    expect(() => container.get<any>('failed')).toThrowError(Error);
+  it('should resolve entries', () => {
+    const container: Container = new Container();
+    container.register(HelloWorld);
+
+    expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+  });
+
+  it('should throw error if attempt to duplicate register entries', () => {
+    const container: Container = new Container();
+    container.register(HelloWorld);
+
+    expect(() => container.register(HelloWorld)).toThrowError(Error);
+  });
+
+  it('should resolve entries with name', () => {
+    const container: Container = new Container();
+    container.registerWithName('For HelloWorld', HelloWorld);
+
+    expect(container.get<HelloWorld>('For HelloWorld').say()).toEqual('Hello World!');
+  });
+
+  it('should throw error if cannot resolve entries', () => {
+    const container: Container = new Container();
+    expect(() => container.get<any>('something')).toThrowError(Error);
   });
 });
