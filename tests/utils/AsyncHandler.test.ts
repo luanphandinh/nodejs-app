@@ -4,11 +4,13 @@ import { Request, Response } from "express";
 import { Response as TestResponse } from "supertest";
 import { AsyncHandler } from '@utils/AsyncHander';
 import { HttpError } from '@utils/HttpError';
+import dependencies from '@src/dependencies';
 
 describe('async', () => {
   it('should handle async response', () => {
     return app
-      .withRoute('/async', (new AsyncHandler).async(async (req: Request, res: Response): Promise<Response> => res.json({ async: 'work'})))
+      .withRoute('/async', (dependencies.get<AsyncHandler>(AsyncHandler.name))
+        .async(async (req: Request, res: Response): Promise<Response> => res.json({ async: 'work'})))
       .listen()
       .get('/async')
       .expect(200)
@@ -19,7 +21,7 @@ describe('async', () => {
 
   it('should handle async error correctly', () => {
     return app
-      .withRoute('/async400', (new AsyncHandler).async(async (req: Request, res: Response): Promise<Response> => {
+      .withRoute('/async400', (dependencies.get<AsyncHandler>(AsyncHandler.name)).async(async (req: Request, res: Response): Promise<Response> => {
         throw new HttpError(400, 'Invalid Params');
       }))
       .listen()
