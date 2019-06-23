@@ -5,7 +5,7 @@
   "main": "./dist/server.js",
   "scripts": {
     "start": "node dist/server.js",
-    "test": "jest --config jest.config.json --forceExit --verbose",
+    "test": "jest --config jest.config.json --forceExit --verbose && cat ./coverage/lcov.info | coveralls",
     "clean": "rimraf dist && rimraf coverage",
     "build": "npm run clean && node_modules/.bin/webpack --config webpack.config.js",
     "postinstall": "npm run build",

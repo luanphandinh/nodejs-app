@@ -1,4 +1,4 @@
-# nodejs-template [![Build Status](https://travis-ci.org/luanphandinh/nodejs-template.svg?branch=master)](https://travis-ci.org/luanphandinh/nodejs-template)
+# nodejs-template [![Build Status](https://travis-ci.org/luanphandinh/nodejs-template.svg?branch=master)](https://travis-ci.org/luanphandinh/nodejs-template) [![Coverage Status](https://coveralls.io/repos/github/luanphandinh/nodejs-template/badge.svg?branch=master)](https://coveralls.io/github/luanphandinh/nodejs-template?branch=master)
 simple express js app
 
 ### Development
