@@ -1,8 +1,4 @@
-export interface IHttpError {
-  code: number;
-  message: string;
-  errors: any;
-}
+import { IHttpError } from './Interfaces';
 
 export class HttpError extends Error implements IHttpError {
   readonly code: number;

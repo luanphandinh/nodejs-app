@@ -1,8 +1,4 @@
-export interface IContainer {
-  get<T>(name: string): T;
-  register<T>(definition: T): IContainer;
-  registerWithName<T>(name: string, definition: T): IContainer;
-}
+import { IContainer } from './Interfaces';
 
 export class Container implements IContainer {
   private entries: any = {};
