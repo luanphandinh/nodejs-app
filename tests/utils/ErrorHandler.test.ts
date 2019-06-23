@@ -5,6 +5,8 @@ import { Response as TestResponse } from "supertest";
 import { HttpError } from '@utils/HttpError';
 
 describe('error', () => {
+  afterEach((done) => app.stop(done));
+
   it('should return 400 Bad Request', () => {
     return app
       .withRoute('/400', (req: Request, res: Response): Response => {
@@ -48,5 +50,3 @@ describe('error', () => {
       });
   });
 });
-
-afterEach(() => app.stop());

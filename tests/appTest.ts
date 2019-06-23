@@ -28,7 +28,7 @@ export class AppTest {
   public listen() {
     // Handling errors always at the end of app.use
     this.app.use(dependencies.get<ErrorHandler>(ErrorHandler.name).handle);
-    if (!this.server) {
+    if (! this.server) {
       this.server = this.app.listen(9091);
       this.listener = request(this.app);
     }
@@ -36,8 +36,8 @@ export class AppTest {
     return this.listener;
   }
 
-  public stop() {
-    this.server.close();
+  public stop(done: any) {
+    this.server.close(done);
     this.server = null;
   }
 }

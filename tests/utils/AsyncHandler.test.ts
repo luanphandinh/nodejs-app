@@ -7,6 +7,8 @@ import { HttpError } from '@utils/HttpError';
 import dependencies from '@src/dependencies';
 
 describe('async', () => {
+  afterEach((done) => app.stop(done));
+
   it('should handle async response', () => {
     return app
       .withRoute('/async', (dependencies.get<AsyncHandler>(AsyncHandler.name))
@@ -34,5 +36,3 @@ describe('async', () => {
       });
   });
 });
-
-afterEach(() => app.stop());
