@@ -11,6 +11,12 @@ export class Container implements IContainer {
     return this.entries[name];
   }
 
+  getAll(): any {
+    return {
+      ...this.entries,
+    };
+  }
+
   register<T = any>(definition: any): IContainer {
     return this.registerWithName(definition.name, definition);
   }

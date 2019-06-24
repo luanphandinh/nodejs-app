@@ -12,6 +12,27 @@ describe('Container', () => {
     expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
   });
 
+  it('should resolve all entries', () => {
+    const container: Container = new Container();
+    container.register(HelloWorld);
+    container.registerWithName('For HelloWorld', HelloWorld);
+
+    const entries = container.getAll();
+    expect(entries).toHaveProperty(HelloWorld.name);
+    expect(entries).toHaveProperty('For HelloWorld');
+  });
+
+  it('should not affect entries from container', () => {
+    const container: Container = new Container();
+    container.register(HelloWorld);
+
+    const entries = container.getAll();
+    expect(entries).toHaveProperty(HelloWorld.name);
+    entries[HelloWorld.name] = 'changed';
+
+    expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+  });
+
   it('should throw error if attempt to duplicate register entries', () => {
     const container: Container = new Container();
     container.register(HelloWorld);
