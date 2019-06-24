@@ -12,6 +12,7 @@ fs.readdirSync('node_modules')
   });
 
 module.exports = {
+  mode: 'development',
   devtool: 'source-map',
 
   entry: {
