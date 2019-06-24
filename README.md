@@ -1,11 +1,18 @@
 # nodejs-template [![Build Status](https://travis-ci.org/luanphandinh/nodejs-template.svg?branch=master)](https://travis-ci.org/luanphandinh/nodejs-template) [![Coverage Status](https://coveralls.io/repos/github/luanphandinh/nodejs-template/badge.svg?branch=master)](https://coveralls.io/github/luanphandinh/nodejs-template?branch=master)
-simple express js app
+```
+Simple express js app
+This project is under development process and not yet productable.
+```
 
 ### Development
-`npm run dev`
+```
+npm run dev
+```
 
 ### Test
-`npm run test`
+```
+npm run test
+```
 
 ## utils/ErrorHandler
 Handle errors and return corresponding `HTTP_STATUS_CODE` with `throw new HttpError` anywhere in your app.  
