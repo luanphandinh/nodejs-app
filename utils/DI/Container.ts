@@ -1,4 +1,4 @@
-import { IContainer } from './Interfaces';
+import { IContainer } from './IContainer';
 
 export class Container implements IContainer {
   private entries: any = {};

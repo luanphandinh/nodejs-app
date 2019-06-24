@@ -1,4 +1,4 @@
-import { Container } from '@utils/Container';
+import { Container } from '@utils/DI/Container';
 import { ErrorHandler } from '@utils/ErrorHandler';
 import { AsyncHandler } from '@utils/AsyncHander';
 
