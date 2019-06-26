@@ -3,8 +3,8 @@ import * as dotenv from 'dotenv';
 import * as bodyParser from 'body-parser';
 
 import routes from '@src/routes';
-import dependencies from '@src/dependencies';
 import { ErrorHandler } from '@utils/ErrorHandler';
+import * as DI from '@utils/DI/DI';
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ export class App {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(routes);
-    app.use(dependencies.get<ErrorHandler>(ErrorHandler.name).handle);
+    app.use(DI.getContainer().get<ErrorHandler>(ErrorHandler.name).handle);
 
     return app;
   }

@@ -1,7 +1,6 @@
 import app from '@tests/appTest';
 import { Request, Response } from "express";
 import { Response as TestResponse } from "supertest";
-
 import { HttpError } from '@utils/HttpError';
 
 describe('error', () => {

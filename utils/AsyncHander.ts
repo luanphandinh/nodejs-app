@@ -1,5 +1,7 @@
 import { IAsyncHandler } from './Interfaces';
+import { injectable } from './DI/DI';
 
+@injectable()
 export class AsyncHandler implements IAsyncHandler{
   public async(fn: Function): Function {
     return function (...args: any[]) {
