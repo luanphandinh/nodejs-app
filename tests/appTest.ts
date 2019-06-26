@@ -4,7 +4,8 @@ import * as request from 'supertest';
 
 import { App } from '@src/app';
 import { ErrorHandler } from "@utils/ErrorHandler";
-import dependencies from "../src/dependencies";
+import * as DI from '@utils/DI/DI';
+
 
 export class AppTest {
   private app: express.Express = null;
@@ -27,7 +28,7 @@ export class AppTest {
 
   public listen() {
     // Handling errors always at the end of app.use
-    this.app.use(dependencies.get<ErrorHandler>(ErrorHandler.name).handle);
+    this.app.use(DI.getContainer().get<ErrorHandler>(ErrorHandler.name).handle);
     if (! this.server) {
       this.server = this.app.listen(9091);
       this.listener = request(this.app);
