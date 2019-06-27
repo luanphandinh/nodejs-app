@@ -13,4 +13,3 @@ export interface IHttpError {
 export interface IErrorHandler {
   handle(err: IHttpError, req: Request, res: Response, next: Function): Response;
 }
-

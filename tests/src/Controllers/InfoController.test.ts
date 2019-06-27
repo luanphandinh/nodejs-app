@@ -1,11 +1,11 @@
 import { Response } from 'supertest';
-import app from '@tests/appTest';
+import appTest from '@tests/appTest';
 
 describe('GET /', () => {
-  afterEach((done) => app.stop(done));
+  afterEach(done => appTest.stop(done));
 
   it('should return 200 OK', () => {
-    return app
+    return appTest
       .listen()
       .get('/')
       .expect(200)

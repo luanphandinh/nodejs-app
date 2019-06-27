@@ -6,5 +6,7 @@ jobs:
   include:
     - stage: build
       script: npm ci
+    - stage: ts:lint
+      script: npm run ts:lint
     - stage: test
-      script: npm test
+      script: npm run test

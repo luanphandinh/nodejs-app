@@ -1,5 +1,6 @@
-import { injectable } from '@utils/DI/DI';
 import * as DI from '@utils/DI/DI';
+// tslint:disable-next-line:no-duplicate-imports
+import { injectable } from '@utils/DI/DI';
 
 describe('DI', () => {
   @injectable()
