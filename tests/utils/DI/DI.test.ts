@@ -1,6 +1,6 @@
 import * as DI from '@utils/DI/DI';
 // tslint:disable-next-line:no-duplicate-imports
-import { injectable } from '@utils/DI/DI';
+import { injectable, inject } from '@utils/DI/DI';
 
 describe('DI', () => {
   @injectable()
@@ -8,8 +8,13 @@ describe('DI', () => {
     public say = () => 'Hello World!';
   }
 
+  class Hero {
+    @inject()
+    public will: HelloWorld;
+  }
+
   it('should injectable class and resolve it', () => {
-    const container = DI.getContainer();
-    expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+    const hero = new Hero();
+    expect(hero.will.say()).toEqual('Hello World!');
   });
 });
