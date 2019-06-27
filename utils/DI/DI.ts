@@ -3,12 +3,14 @@ import { IContainer } from './IContainer';
 
 const container: IContainer = new Container();
 
-export const injectable = (): ClassDecorator => {
+function injectable(): ClassDecorator {
   return (target: any) => {
     container.register(target);
   };
-};
+}
 
-export const getContainer = (): IContainer => {
+function getContainer(): IContainer {
   return container;
-};
+}
+
+export { injectable, getContainer };
