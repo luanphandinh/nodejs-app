@@ -1,13 +1,13 @@
-import app from '@tests/appTest';
-import { Request, Response } from "express";
-import { Response as TestResponse } from "supertest";
+import appTest from '@tests/appTest';
+import { Request, Response } from 'express';
+import { Response as TestResponse } from 'supertest';
 import { HttpError } from '@utils/HttpError';
 
 describe('error', () => {
-  afterEach((done) => app.stop(done));
+  afterEach(done => appTest.stop(done));
 
   it('should return 400 Bad Request', () => {
-    return app
+    return appTest
       .withRoute('/400', (req: Request, res: Response): Response => {
         throw new HttpError(400, 'Invalid Params');
       })
@@ -22,7 +22,7 @@ describe('error', () => {
   });
 
   it('should return 404 Not Found', () => {
-    return app
+    return appTest
       .withRoute('/404', (req: Request, res: Response): Response => {
         throw new HttpError(404, 'Bad Request');
       })
@@ -37,9 +37,9 @@ describe('error', () => {
   });
 
   it('should return 500 Internal Error', () => {
-    return app
+    return appTest
       .withRoute('/500', (req: Request, res: Response): Response => {
-        throw new Error("Internal Error");
+        throw new Error('Internal Error');
       })
       .listen()
       .get('/500')

@@ -41,7 +41,9 @@ module.exports = {
         enforce: 'pre',
         loader: 'tslint-loader',
         options: {
-          emitErrors: true
+          emitErrors: true,
+          configFile: 'tslint.json',
+          tsConfigFile: 'tsconfig.json',
         }
       },
       {

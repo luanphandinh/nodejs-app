@@ -3,9 +3,8 @@ import * as http from 'http';
 import * as request from 'supertest';
 
 import { App } from '@src/app';
-import { ErrorHandler } from "@utils/ErrorHandler";
+import { ErrorHandler } from '@utils/ErrorHandler';
 import * as DI from '@utils/DI/DI';
-
 
 export class AppTest {
   private app: express.Express = null;
@@ -27,7 +26,7 @@ export class AppTest {
   }
 
   public listen() {
-    // Handling errors always at the end of app.use
+    // Handling errors always at the end of appTest.use
     this.app.use(DI.getContainer().get<ErrorHandler>(ErrorHandler.name).handle);
     if (! this.server) {
       this.server = this.app.listen(9091);
