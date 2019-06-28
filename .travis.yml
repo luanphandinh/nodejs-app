@@ -9,4 +9,4 @@ jobs:
     - stage: ts:lint
       script: npm run ts:lint
     - stage: test
-      script: npm run test
+      script: npm run test:ci
