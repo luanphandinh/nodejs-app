@@ -1,19 +1,20 @@
 import { IContainer } from './IContainer';
 
 export class Container implements IContainer {
-  private entries: any = {};
+  private definitions: any = {};
+  private resolvedDefinitions: any = {};
 
   get<T>(name: string): T {
-    if (! this.entries[name]) {
-      throw new Error(`Can not resolved entries for ${name}.`);
+    if (! this.definitions[name]) {
+      throw new Error(`There is no definition registered with ${name}.`);
     }
 
-    return this.entries[name];
+    return this.definitions[name];
   }
 
   getAll(): any {
     return {
-      ...this.entries,
+      ...this.definitions,
     };
   }
 
@@ -22,16 +23,27 @@ export class Container implements IContainer {
   }
 
   registerWithName<T = any>(name: string, definition: any): IContainer {
-    this.entries[name] = this.resolveDefinition(name, definition);
+    if (this.definitions[name] !== undefined) {
+      throw new Error(`Definition ${name} was registered.`);
+    }
 
+    this.definitions[name] = definition;
     return this;
   }
 
-  private resolveDefinition<T>(name: string, definition: any): T {
-    if (this.entries[name] !== undefined) {
-      throw new Error(`Entry ${name} has been registered.`);
+  resolve<T>(name: string): T {
+    if (! this.definitions[name]) {
+      throw new Error(`There is no entry registered with ${name}.`);
     }
 
+    if (! this.resolvedDefinitions[name]) {
+      this.resolvedDefinitions[name] = this.resolveDefinition(this.definitions[name]);
+    }
+
+    return this.resolvedDefinitions[name];
+  }
+
+  private resolveDefinition<T>(definition: any): T {
     let entry = definition;
     if (definition instanceof Function) {
       entry = new definition();

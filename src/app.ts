@@ -16,7 +16,7 @@ export class App {
     app.use(bodyParser.urlencoded({ extended: true }));
 
     app.use(routes);
-    app.use(DI.getContainer().get<ErrorHandler>(ErrorHandler.name).handle);
+    app.use(DI.getContainer().resolve<ErrorHandler>(ErrorHandler.name).handle);
 
     return app;
   }
