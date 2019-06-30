@@ -2,6 +2,7 @@ import { IContainer } from './IContainer';
 
 export class Container implements IContainer {
   private definitions: Map<string, any> = new Map<string, any>();
+  private definitionDependencies: Map<string, any[]> = new Map<string, any[]>();
   private resolvedDefinitions: Map<string, any> = new Map<string, any>();
 
   get<T>(name: string): T {
@@ -34,6 +35,18 @@ export class Container implements IContainer {
     return this;
   }
 
+  inject(name: string, injectableName: string, index: number = 0): void {
+    const dependencies = this.fetchDependencies(name);
+    for (const dependency of dependencies) {
+      if (dependency === injectableName) {
+        throw new Error(`Duplicate inject ${dependency} into ${name}`);
+      }
+    }
+
+    dependencies[index] = injectableName;
+    this.definitionDependencies.set(name, dependencies);
+  }
+
   resolve<T>(name: string): T {
     if (! this.definitions.has(name)) {
       throw new Error(`There is no entry registered with ${name}.`);
@@ -46,11 +59,24 @@ export class Container implements IContainer {
     return this.resolvedDefinitions.get(name);
   }
 
+  private fetchDependencies(name: string) {
+    return this.definitionDependencies.has(name)
+      ? this.definitionDependencies.get(name)
+      : [];
+  }
+
   private resolveDefinition<T>(name: string): T {
     const definition = this.definitions.get(name);
     let entry = definition;
     if (definition instanceof Function) {
-      entry = new definition();
+      const dependencies = this.fetchDependencies(name)
+        .map((dependency: any) => this.resolveDefinition(dependency));
+
+      if (dependencies.length > 0) {
+        entry = new definition(...dependencies);
+      } else {
+        entry = new definition();
+      }
     }
 
     return entry;

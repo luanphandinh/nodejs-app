@@ -14,12 +14,17 @@ function injectable(): ClassDecorator {
 
 function inject() {
   return (target: any, propertyKey: string | symbol, parameterIndex?: number) => {
-    if (parameterIndex === undefined) {
+    const isPropertyInject = parameterIndex === undefined;
+    const isParameterInject = typeof parameterIndex === 'number';
+
+    if (isPropertyInject) {
       const type = Reflect.getMetadata(DESIGN_TYPE, target, propertyKey);
       target[propertyKey] = container.resolve(type.name);
-    } else {
+    }
+
+    if (isParameterInject) {
       const types = Reflect.getMetadata(DESIGN_PARAM_TYPES, target, propertyKey);
-      const values = types.map((type: any) => container.get(type.name)); // Resolves later
+      container.inject(target.name, types[parameterIndex].name, parameterIndex);
     }
   };
 }

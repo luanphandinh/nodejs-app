@@ -42,6 +42,39 @@ describe('Container', () => {
     });
   });
 
+  describe('inject', () => {
+    it('should throw error if duplicate inject', () => {
+      class ForInject {}
+      class DuplicateInjectError {}
+
+      const container: Container = new Container();
+      container.register(ForInject);
+      container.register(DuplicateInjectError);
+
+      expect(() => {
+        container.inject(DuplicateInjectError.name, ForInject.name);
+        container.inject(DuplicateInjectError.name, ForInject.name);
+      }).toThrowError(`Duplicate inject ${ForInject.name} into ${DuplicateInjectError.name}`);
+    });
+
+    it('should resolve definition with dependencies', () => {
+      class Dependency {
+        info = () => 'This is dependency';
+      }
+
+      class HaveDependency {
+        constructor(public dependency: Dependency) {};
+      }
+
+      const container: Container = new Container();
+      container.register(Dependency);
+      container.register(HaveDependency);
+
+      container.inject(HaveDependency.name, Dependency.name);
+      expect(container.resolve<HaveDependency>(HaveDependency.name).dependency.info()).toEqual('This is dependency');
+    });
+  });
+
   describe('resolve', () => {
     it('should resolve entries', () => {
       const container: Container = new Container();
