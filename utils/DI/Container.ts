@@ -1,21 +1,24 @@
 import { IContainer } from './IContainer';
 
 export class Container implements IContainer {
-  private definitions: any = {};
-  private resolvedDefinitions: any = {};
+  private definitions: Map<string, any> = new Map<string, any>();
+  private resolvedDefinitions: Map<string, any> = new Map<string, any>();
 
   get<T>(name: string): T {
-    if (! this.definitions[name]) {
+    if (! this.definitions.has(name)) {
       throw new Error(`There is no definition registered with ${name}.`);
     }
 
-    return this.definitions[name];
+    return this.definitions.get(name);
   }
 
   getAll(): any {
-    return {
-      ...this.definitions,
-    };
+    const definitions: any = {};
+    for (const [k, v] of this.definitions.entries()) {
+      definitions[k] = v;
+    }
+
+    return definitions;
   }
 
   register<T = any>(definition: any): IContainer {
@@ -23,27 +26,28 @@ export class Container implements IContainer {
   }
 
   registerWithName<T = any>(name: string, definition: any): IContainer {
-    if (this.definitions[name] !== undefined) {
+    if (this.definitions.has(name)) {
       throw new Error(`Definition ${name} was registered.`);
     }
 
-    this.definitions[name] = definition;
+    this.definitions.set(name, definition);
     return this;
   }
 
   resolve<T>(name: string): T {
-    if (! this.definitions[name]) {
+    if (! this.definitions.has(name)) {
       throw new Error(`There is no entry registered with ${name}.`);
     }
 
-    if (! this.resolvedDefinitions[name]) {
-      this.resolvedDefinitions[name] = this.resolveDefinition(this.definitions[name]);
+    if (! this.resolvedDefinitions.has(name)) {
+      this.resolvedDefinitions.set(name, this.resolveDefinition(name));
     }
 
-    return this.resolvedDefinitions[name];
+    return this.resolvedDefinitions.get(name);
   }
 
-  private resolveDefinition<T>(definition: any): T {
+  private resolveDefinition<T>(name: string): T {
+    const definition = this.definitions.get(name);
     let entry = definition;
     if (definition instanceof Function) {
       entry = new definition();
