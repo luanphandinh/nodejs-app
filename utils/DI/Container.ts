@@ -10,10 +10,14 @@ export class Container implements IContainer {
       throw new Error(`There is no definition registered with ${name}.`);
     }
 
-    return this.definitions.get(name);
+    if (! this.resolvedDefinitions.has(name)) {
+      this.resolvedDefinitions.set(name, this.resolveDefinition(name));
+    }
+
+    return this.resolvedDefinitions.get(name);
   }
 
-  getAll(): any {
+  getDefinitions(): any {
     const definitions: any = {};
     for (const [k, v] of this.definitions.entries()) {
       definitions[k] = v;
@@ -47,18 +51,6 @@ export class Container implements IContainer {
     this.definitionDependencies.set(name, dependencies);
   }
 
-  resolve<T>(name: string): T {
-    if (! this.definitions.has(name)) {
-      throw new Error(`There is no entry registered with ${name}.`);
-    }
-
-    if (! this.resolvedDefinitions.has(name)) {
-      this.resolvedDefinitions.set(name, this.resolveDefinition(name));
-    }
-
-    return this.resolvedDefinitions.get(name);
-  }
-
   private fetchDependencies(name: string) {
     return this.definitionDependencies.has(name)
       ? this.definitionDependencies.get(name)
@@ -67,18 +59,17 @@ export class Container implements IContainer {
 
   private resolveDefinition<T>(name: string): T {
     const definition = this.definitions.get(name);
-    let entry = definition;
     if (definition instanceof Function) {
       const dependencies = this.fetchDependencies(name)
         .map((dependency: any) => this.resolveDefinition(dependency));
 
       if (dependencies.length > 0) {
-        entry = new definition(...dependencies);
-      } else {
-        entry = new definition();
+        return new definition(...dependencies);
       }
+
+      return new definition();
     }
 
-    return entry;
+    return definition;
   }
 }
