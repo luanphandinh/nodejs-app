@@ -6,11 +6,11 @@ export class Container implements IContainer {
   private resolvedDefinitions: Map<string, any> = new Map<string, any>();
 
   get<T>(name: string): T {
-    if (! this.definitions.has(name)) {
+    if (! this.hasDefinition(name)) {
       throw new Error(`There is no definition registered with ${name}.`);
     }
 
-    if (! this.resolvedDefinitions.has(name)) {
+    if (! this.hasResolvedDefinition(name)) {
       this.resolvedDefinitions.set(name, this.resolveDefinition(name));
     }
 
@@ -31,7 +31,7 @@ export class Container implements IContainer {
   }
 
   registerWithName<T = any>(name: string, definition: any): IContainer {
-    if (this.definitions.has(name)) {
+    if (this.hasDefinition(name)) {
       throw new Error(`Definition ${name} was registered.`);
     }
 
@@ -51,6 +51,14 @@ export class Container implements IContainer {
     this.definitionDependencies.set(name, dependencies);
   }
 
+  private hasDefinition(name: string): boolean {
+    return this.definitions.has(name);
+  }
+
+  private hasResolvedDefinition(name: string): boolean {
+    return this.resolvedDefinitions.has(name);
+  }
+
   private fetchDependencies(name: string) {
     return this.definitionDependencies.has(name)
       ? this.definitionDependencies.get(name)
@@ -59,17 +67,13 @@ export class Container implements IContainer {
 
   private resolveDefinition<T>(name: string): T {
     const definition = this.definitions.get(name);
-    if (definition instanceof Function) {
-      const dependencies = this.fetchDependencies(name)
-        .map((dependency: any) => this.resolveDefinition(dependency));
+    const dependencies = this.fetchDependencies(name)
+      .map((dependency: any) => this.resolveDefinition(dependency));
 
-      if (dependencies.length > 0) {
-        return new definition(...dependencies);
-      }
-
-      return new definition();
+    if (dependencies.length > 0) {
+      return new definition(...dependencies);
     }
 
-    return definition;
+    return new definition();
   }
 }
