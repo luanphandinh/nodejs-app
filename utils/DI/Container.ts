@@ -11,7 +11,7 @@ export class Container implements IContainer {
     }
 
     if (! this.hasResolvedDefinition(name)) {
-      this.resolvedDefinitions.set(name, this.resolveDefinition(name));
+      this.set(name, this.resolveDefinition(name));
     }
 
     return this.resolvedDefinitions.get(name);
@@ -65,7 +65,15 @@ export class Container implements IContainer {
       : [];
   }
 
-  private resolveDefinition<T>(name: string): T {
+  public set<T>(name: string, definition: any): void {
+    this.resolvedDefinitions.set(name, definition);
+  }
+
+  private resolveDefinition<T>(name: string): void {
+    if (this.hasResolvedDefinition(name)) {
+      return this.get(name);
+    }
+
     const definition = this.definitions.get(name);
     const dependencies = this.fetchDependencies(name)
       .map((dependency: any) => this.resolveDefinition(dependency));
