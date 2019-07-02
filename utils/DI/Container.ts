@@ -5,6 +5,11 @@ export class Container implements IContainer {
   private definitionDependencies: Map<string, any[]> = new Map<string, any[]>();
   private resolvedDefinitions: Map<string, any> = new Map<string, any>();
 
+  constructor() {
+    this.registerWithName(Container.name, this);
+    this.set(Container.name, this);
+  }
+
   get<T>(name: string): T {
     if (! this.hasDefinition(name)) {
       throw new Error(`There is no definition registered with ${name}.`);

@@ -71,6 +71,14 @@ describe('Container', () => {
   });
 
   describe('get', () => {
+    it('should able to resolve itself', () => {
+      const container: Container = new Container();
+      container.register(HelloWorld);
+
+      const resolvedContainer = container.get<Container>(Container.name);
+      expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+    });
+
     it('should throw error if attempt to get no registered definition', () => {
       const container: Container = new Container();
       expect(() => container.get('No registered')).toThrowError('There is no definition registered with No registered.');
