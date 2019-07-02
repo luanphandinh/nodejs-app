@@ -5,15 +5,24 @@ export class Container implements IContainer {
   private definitionDependencies: Map<string, any[]> = new Map<string, any[]>();
   private resolvedDefinitions: Map<string, any> = new Map<string, any>();
 
+  constructor() {
+    this.registerWithName(Container.name, this);
+    this.set(Container.name, this);
+  }
+
   get<T>(name: string): T {
-    if (! this.definitions.has(name)) {
+    if (! this.hasDefinition(name)) {
       throw new Error(`There is no definition registered with ${name}.`);
     }
 
-    return this.definitions.get(name);
+    if (! this.hasResolvedDefinition(name)) {
+      this.set(name, this.resolveDefinition(name));
+    }
+
+    return this.resolvedDefinitions.get(name);
   }
 
-  getAll(): any {
+  getDefinitions(): any {
     const definitions: any = {};
     for (const [k, v] of this.definitions.entries()) {
       definitions[k] = v;
@@ -27,7 +36,7 @@ export class Container implements IContainer {
   }
 
   registerWithName<T = any>(name: string, definition: any): IContainer {
-    if (this.definitions.has(name)) {
+    if (this.hasDefinition(name)) {
       throw new Error(`Definition ${name} was registered.`);
     }
 
@@ -47,16 +56,12 @@ export class Container implements IContainer {
     this.definitionDependencies.set(name, dependencies);
   }
 
-  resolve<T>(name: string): T {
-    if (! this.definitions.has(name)) {
-      throw new Error(`There is no entry registered with ${name}.`);
-    }
+  private hasDefinition(name: string): boolean {
+    return this.definitions.has(name);
+  }
 
-    if (! this.resolvedDefinitions.has(name)) {
-      this.resolvedDefinitions.set(name, this.resolveDefinition(name));
-    }
-
-    return this.resolvedDefinitions.get(name);
+  private hasResolvedDefinition(name: string): boolean {
+    return this.resolvedDefinitions.has(name);
   }
 
   private fetchDependencies(name: string) {
@@ -65,20 +70,23 @@ export class Container implements IContainer {
       : [];
   }
 
-  private resolveDefinition<T>(name: string): T {
-    const definition = this.definitions.get(name);
-    let entry = definition;
-    if (definition instanceof Function) {
-      const dependencies = this.fetchDependencies(name)
-        .map((dependency: any) => this.resolveDefinition(dependency));
+  public set<T>(name: string, definition: any): void {
+    this.resolvedDefinitions.set(name, definition);
+  }
 
-      if (dependencies.length > 0) {
-        entry = new definition(...dependencies);
-      } else {
-        entry = new definition();
-      }
+  private resolveDefinition<T>(name: string): void {
+    if (this.hasResolvedDefinition(name)) {
+      return this.get(name);
     }
 
-    return entry;
+    const definition = this.definitions.get(name);
+    const dependencies = this.fetchDependencies(name)
+      .map((dependency: any) => this.resolveDefinition(dependency));
+
+    if (dependencies.length > 0) {
+      return new definition(...dependencies);
+    }
+
+    return new definition();
   }
 }

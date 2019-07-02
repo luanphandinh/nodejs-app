@@ -11,7 +11,7 @@ describe('async', () => {
 
   it('should handle async response', () => {
     return appTest
-      .withRoute('/async', (DI.getContainer().resolve<AsyncHandler>(AsyncHandler.name))
+      .withRoute('/async', (DI.getContainer().get<AsyncHandler>(AsyncHandler.name))
         .async(async (req: Request, res: Response): Promise<Response> => res.json({ async: 'work' })))
       .listen()
       .get('/async')
@@ -23,7 +23,7 @@ describe('async', () => {
 
   it('should handle async error correctly', () => {
     return appTest
-      .withRoute('/async400', (DI.getContainer().resolve<AsyncHandler>(AsyncHandler.name))
+      .withRoute('/async400', (DI.getContainer().get<AsyncHandler>(AsyncHandler.name))
         .async(async (req: Request, res: Response): Promise<Response> => {
           throw new HttpError(400, 'Invalid Params');
         }))

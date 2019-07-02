@@ -19,7 +19,7 @@ function inject() {
 
     if (isPropertyInject) {
       const type = Reflect.getMetadata(DESIGN_TYPE, target, propertyKey);
-      target[propertyKey] = container.resolve(type.name);
+      target[propertyKey] = container.get(type.name);
     }
 
     if (isParameterInject) {

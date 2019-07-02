@@ -14,17 +14,12 @@ describe('Container', () => {
     });
   });
 
-  describe('get', () => {
-    it('should throw error if attempt to get no registered definition', () => {
-      const container: Container = new Container();
-      expect(() => container.get('No registered')).toThrowError('There is no definition registered with No registered.');
-    });
-
+  describe('getDefinitions', () => {
     it('should not affect definitions from container', () => {
       const container: Container = new Container();
       container.register(HelloWorld);
 
-      const entries = container.getAll();
+      const entries = container.getDefinitions();
       expect(entries).toHaveProperty(HelloWorld.name);
       entries[HelloWorld.name] = 'changed';
 
@@ -36,7 +31,7 @@ describe('Container', () => {
       container.register(HelloWorld);
       container.registerWithName('For HelloWorld', HelloWorld);
 
-      const entries = container.getAll();
+      const entries = container.getDefinitions();
       expect(entries).toHaveProperty(HelloWorld.name);
       expect(entries).toHaveProperty('For HelloWorld');
     });
@@ -71,28 +66,41 @@ describe('Container', () => {
       container.register(HaveDependency);
 
       container.inject(HaveDependency.name, Dependency.name);
-      expect(container.resolve<HaveDependency>(HaveDependency.name).dependency.info()).toEqual('This is dependency');
+      expect(container.get<HaveDependency>(HaveDependency.name).dependency.info()).toEqual('This is dependency');
     });
   });
 
-  describe('resolve', () => {
-    it('should resolve entries', () => {
+  describe('get', () => {
+    it('should able to resolve itself', () => {
       const container: Container = new Container();
       container.register(HelloWorld);
 
-      expect(container.resolve<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+      const resolvedContainer = container.get<Container>(Container.name);
+      expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+    });
+
+    it('should throw error if attempt to get no registered definition', () => {
+      const container: Container = new Container();
+      expect(() => container.get('No registered')).toThrowError('There is no definition registered with No registered.');
+    });
+
+    it('should able to get entry', () => {
+      const container: Container = new Container();
+      container.register(HelloWorld);
+
+      expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
     });
 
     it('should resolve entries with name', () => {
       const container: Container = new Container();
       container.registerWithName('For HelloWorld', HelloWorld);
 
-      expect(container.resolve<HelloWorld>('For HelloWorld').say()).toEqual('Hello World!');
+      expect(container.get<HelloWorld>('For HelloWorld').say()).toEqual('Hello World!');
     });
 
     it('should throw error if cannot resolve entries', () => {
       const container: Container = new Container();
-      expect(() => container.resolve<any>('something')).toThrowError('There is no entry registered with something.');
+      expect(() => container.get<any>('something wrong')).toThrowError('There is no definition registered with something wrong.');
     });
   });
 });
