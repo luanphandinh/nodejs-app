@@ -4,7 +4,7 @@ import * as request from 'supertest';
 
 import { App } from '@src/app';
 import { ErrorHandler } from '@utils/ErrorHandler';
-import * as DI from '@utils/DI/DI';
+import { DI } from '@utils/DI/DI';
 
 export class AppTest {
   private app: express.Express = null;

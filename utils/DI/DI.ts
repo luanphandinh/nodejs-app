@@ -33,4 +33,5 @@ function getContainer(): IContainer {
   return container;
 }
 
-export { injectable, inject, getContainer };
+export { injectable, inject };
+export const DI = { getContainer };

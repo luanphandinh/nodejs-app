@@ -4,7 +4,7 @@ import * as bodyParser from 'body-parser';
 
 import routes from '@src/routes';
 import { ErrorHandler } from '@utils/ErrorHandler';
-import * as DI from '@utils/DI/DI';
+import { DI } from '@utils/DI/DI';
 
 dotenv.config();
 
