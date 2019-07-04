@@ -28,7 +28,6 @@
   "collectCoverage": true,
   "collectCoverageFrom": [
     "**/*.{ts,jsx}",
-    "!**/tests/**",
     "!**/src/server.ts",
     "!**/node_modules/**",
     "!**/vendor/**",
