@@ -14,12 +14,11 @@ export class App implements IApp {
 
   public build(): IApp {
     this.app = express();
-    this.app
-      .set('port', this.config.getPort())
-      .use(this.config.getBodyParser())
-      .use(this.config.getUrlEncoder())
-      .use(this.config.getRouter())
-      .use(this.config.getErrorHandler().handle);
+    this.app.set('port', this.config.getPort());
+    this.config.getBodyParser() && this.app.use(this.config.getBodyParser());
+    this.config.getUrlEncoder() && this.app.use(this.config.getUrlEncoder());
+    this.config.getRouter() && this.app.use(this.config.getRouter());
+    this.config.getErrorHandler() && this.app.use(this.config.getErrorHandler().handle);
 
     this.built = true;
     return this;

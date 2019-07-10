@@ -23,10 +23,10 @@ export interface IConfig {
   useErrorHandler(handler: IErrorHandler): IConfig;
 
   getPort(): number | string;
-  getRouter(): any;
-  getBodyParser(): any;
-  getUrlEncoder(): any;
-  getErrorHandler(): any;
+  getRouter(): any | null;
+  getBodyParser(): any | null;
+  getUrlEncoder(): any | null;
+  getErrorHandler(): any | null;
 }
 
 export interface IApp {
