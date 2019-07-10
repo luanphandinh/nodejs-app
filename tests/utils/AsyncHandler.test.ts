@@ -2,7 +2,7 @@ import appTest from '@tests/appTest';
 
 import { Request, Response } from 'express';
 import { Response as TestResponse } from 'supertest';
-import { AsyncHandler } from '@utils/AsyncHander';
+import { AsyncHandler } from '@utils/AsyncHandler';
 import { HttpError } from '@utils/HttpError';
 import { DI } from '@utils/DI/DI';
 
