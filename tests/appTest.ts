@@ -1,36 +1,38 @@
-import * as express from 'express';
-import * as http from 'http';
+import { Express } from 'express';
+import { Server } from 'http';
 import * as request from 'supertest';
 
-import { App } from '@src/app';
-import { ErrorHandler } from '@utils/ErrorHandler';
-import * as DI from '@utils/DI/DI';
+import config from '@src/config';
+import { IConfig } from '@utils/Interfaces';
+import { App } from '@utils/App';
 
 export class AppTest {
-  private app: express.Express = null;
+  private app: Express = null;
+  private config: IConfig = config;
   private listener: any;
-  private server: http.Server;
+  private server: Server;
 
-  public getApp(): AppTest {
-    if (!this.app) {
-      this.app = App.getApp();
+  private getApp(): Express {
+    if (! this.app) {
+      this.app = new App()
+        .useConfig(this.config)
+        .build()
+        .getApp();
     }
 
-    return this;
+    return this.app;
   }
 
   public withRoute(name: string, callback: any): AppTest {
-    this.app.use((express.Router()).get(name, callback));
-
+    this.config.getRouter().get(name, callback);
     return this;
   }
 
   public listen() {
-    // Handling errors always at the end of appTest.use
-    this.app.use(DI.getContainer().get<ErrorHandler>(ErrorHandler.name).handle);
+    const app = this.getApp();
     if (! this.server) {
-      this.server = this.app.listen(9091);
-      this.listener = request(this.app);
+      this.server = app.listen(9091);
+      this.listener = request(app);
     }
 
     return this.listener;
@@ -42,4 +44,4 @@ export class AppTest {
   }
 }
 
-export default new AppTest().getApp();
+export default new AppTest();

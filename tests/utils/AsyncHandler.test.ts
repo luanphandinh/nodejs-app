@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { Response as TestResponse } from 'supertest';
 import { AsyncHandler } from '@utils/AsyncHander';
 import { HttpError } from '@utils/HttpError';
-import * as DI from '@utils/DI/DI';
+import { DI } from '@utils/DI/DI';
 
 describe('async', () => {
   afterEach(done => appTest.stop(done));
