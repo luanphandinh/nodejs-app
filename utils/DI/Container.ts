@@ -9,9 +9,13 @@ export class Container extends DefinitionContainer implements IContainer {
     this.setResolvedDefinition(Container.name, this);
   }
 
-  get<T>(name: string): T {
+  get<T>(name: string, something?: any): T {
     if (! this.hasDefinition(name)) {
-      throw new Error(`There is no definition registered with ${name}.`);
+      if (! something) {
+        throw new Error(`There is no definition registered with ${name}.`);
+      }
+
+      return something;
     }
 
     if (! this.hasResolvedDefinition(name)) {

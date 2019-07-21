@@ -2,8 +2,9 @@ export interface IContainer {
   /**
    * Get resolved dependencies out of container.
    * @param name
+   * @param something will return if can not get name.
    */
-  get<T>(name: string): T;
+  get<T>(name: string, something?: any): T;
 
   /**
    * Get all definitions from container.

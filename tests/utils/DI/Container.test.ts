@@ -120,6 +120,11 @@ describe('Container', () => {
       expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
     });
 
+    it('should get something', () => {
+      const container: Container = new Container();
+      expect(container.get('something', 'succeed')).toEqual('succeed');
+    });
+
     it('should throw error if attempt to get no registered definition', () => {
       const container: Container = new Container();
       expect(() => container.get('No registered')).toThrowError('There is no definition registered with No registered.');
