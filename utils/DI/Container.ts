@@ -5,7 +5,8 @@ import { DefinitionContainer } from './DefinitionContainer';
 export class Container extends DefinitionContainer implements IContainer {
   constructor() {
     super();
-    this.set(Container.name, this);
+    this.setDefinition(Container.name, Container);
+    this.setResolvedDefinition(Container.name, this);
   }
 
   get<T>(name: string): T {
@@ -54,8 +55,8 @@ export class Container extends DefinitionContainer implements IContainer {
   }
 
   public set<T>(name: string, definition: any): void {
-    this.definitions.set(name, definition);
-    this.resolvedDefinitions.set(name, definition);
+    this.setDefinition(name, definition);
+    this.setResolvedDefinition(name, definition);
   }
 
   private resolveDefinition<T>(name: string): any {

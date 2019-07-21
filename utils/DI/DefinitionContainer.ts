@@ -34,6 +34,10 @@ export class DefinitionContainer {
   }
 
   protected getResolvedDefinition(name: string): any {
+    if (this.executableDefinition(name)) {
+      return this.resolvedDefinitions.get(name)(this);
+    }
+
     return this.resolvedDefinitions.get(name);
   }
 
@@ -41,5 +45,13 @@ export class DefinitionContainer {
     return this.definitionDependencies.has(name)
       ? this.definitionDependencies.get(name)
       : [];
+  }
+
+  protected executableDefinition(name: string): boolean {
+    const definition = this.getDefinition(name);
+    const isFunc = definition instanceof Function;
+    const isClass = isFunc && definition.name !== undefined && definition.name !== '';
+
+    return isFunc && ! isClass;
   }
 }
