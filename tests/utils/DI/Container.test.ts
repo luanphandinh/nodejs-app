@@ -104,12 +104,11 @@ describe('Container', () => {
     it('should able to set custom value', () => {
       const container: Container = new Container();
 
-      container.set('Key', 'Value');
-      expect(container.get('Key')).toEqual('Value');
+      container.set('Key1', 'Value1');
+      expect(container.get('Key1')).toEqual('Value1');
 
-      container.set('Key', () => 'Value');
-      const key: Function = container.get('Key');
-      expect(key()).toEqual('Value');
+      container.set('Key2', (container: Container) => container.get('Key1'));
+      expect(container.get('Key2')).toEqual('Value1');
     });
   });
 
@@ -119,6 +118,11 @@ describe('Container', () => {
       container.register(HelloWorld);
 
       expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
+    });
+
+    it('should get something', () => {
+      const container: Container = new Container();
+      expect(container.get('something', 'succeed')).toEqual('succeed');
     });
 
     it('should throw error if attempt to get no registered definition', () => {
