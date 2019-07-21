@@ -1,4 +1,5 @@
 import { IContainer } from './IContainer';
+import MapReduce from '../Funcs/MapReduce';
 
 export class Container implements IContainer {
   private definitions: Map<string, any> = new Map<string, any>();
@@ -6,7 +7,6 @@ export class Container implements IContainer {
   private resolvedDefinitions: Map<string, any> = new Map<string, any>();
 
   constructor() {
-    this.registerWithName(Container.name, this);
     this.set(Container.name, this);
   }
 
@@ -23,12 +23,11 @@ export class Container implements IContainer {
   }
 
   getDefinitions(): any {
-    const definitions: any = {};
-    for (const [k, v] of this.definitions.entries()) {
-      definitions[k] = v;
-    }
+    return MapReduce(this.definitions);
+  }
 
-    return definitions;
+  getResolvedDefinitions(): any {
+    return MapReduce(this.resolvedDefinitions);
   }
 
   register<T = any>(definition: any): IContainer {
@@ -71,6 +70,7 @@ export class Container implements IContainer {
   }
 
   public set<T>(name: string, definition: any): void {
+    this.definitions.set(name, definition);
     this.resolvedDefinitions.set(name, definition);
   }
 

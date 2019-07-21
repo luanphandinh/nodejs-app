@@ -37,6 +37,36 @@ describe('Container', () => {
     });
   });
 
+  describe('getResolvedDefinitions', () => {
+    it('should not affect resolved definitions from container', () => {
+      const container: Container = new Container();
+      container.register(HelloWorld);
+      container.get<HelloWorld>(HelloWorld.name);
+
+      const resolved = container.getResolvedDefinitions();
+      expect(resolved).toHaveProperty(HelloWorld.name);
+      resolved[HelloWorld.name] = 'changed';
+
+      expect(container.get<HelloWorld>(HelloWorld.name)).not.toBe('changed');
+    });
+
+    it('should be able to get all resolved definitions', () => {
+      const container: Container = new Container();
+      container.register(HelloWorld);
+      container.registerWithName('For HelloWorld', HelloWorld);
+
+      let entries = container.getResolvedDefinitions();
+      expect(entries).toHaveProperty(Container.name);
+      expect(entries).not.toHaveProperty(HelloWorld.name);
+      expect(entries).not.toHaveProperty('For HelloWorld');
+
+      container.get<HelloWorld>(HelloWorld.name);
+      entries = container.getResolvedDefinitions();
+      expect(entries).toHaveProperty(HelloWorld.name);
+      expect(entries).not.toHaveProperty('For HelloWorld');
+    });
+  });
+
   describe('inject', () => {
     it('should throw error if duplicate inject', () => {
       class ForInject {}
@@ -58,7 +88,7 @@ describe('Container', () => {
       }
 
       class HaveDependency {
-        constructor(public dependency: Dependency) {};
+        constructor(public dependency: Dependency) {}
       }
 
       const container: Container = new Container();
@@ -70,12 +100,24 @@ describe('Container', () => {
     });
   });
 
+  describe('set', () => {
+    it('should able to set custom value', () => {
+      const container: Container = new Container();
+
+      container.set('Key', 'Value');
+      expect(container.get('Key')).toEqual('Value');
+
+      container.set('Key', () => 'Value');
+      const key: Function = container.get('Key');
+      expect(key()).toEqual('Value');
+    });
+  });
+
   describe('get', () => {
     it('should able to resolve itself', () => {
       const container: Container = new Container();
       container.register(HelloWorld);
 
-      const resolvedContainer = container.get<Container>(Container.name);
       expect(container.get<HelloWorld>(HelloWorld.name).say()).toEqual('Hello World!');
     });
 

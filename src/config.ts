@@ -10,7 +10,6 @@ import { IErrorHandler } from '@utils/Interfaces';
 dotenv.config();
 
 export default new Config()
-  .usePort(process.env.PORT)
   .useBodyParser(bodyParser.json())
   .useUrlEncoder(bodyParser.urlencoded({ extended: true }))
   .useRouter(routes)

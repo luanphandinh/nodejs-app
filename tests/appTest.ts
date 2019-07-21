@@ -1,23 +1,21 @@
-import { Express } from 'express';
-import { Server } from 'http';
 import * as request from 'supertest';
 
 import config from '@src/config';
-import { IConfig } from '@utils/Interfaces';
+import { IConfig, IApp } from '@utils/Interfaces';
 import { App } from '@utils/App';
+import { Server } from 'http';
 
 export class AppTest {
-  private app: Express = null;
+  private app: IApp = null;
   private config: IConfig = config;
   private listener: any;
   private server: Server;
 
-  private getApp(): Express {
+  private getApp(): IApp {
     if (! this.app) {
       this.app = new App()
-        .useConfig(this.config)
-        .build()
-        .getApp();
+        .useConfig(this.config.setPort(9091))
+        .build();
     }
 
     return this.app;
@@ -31,8 +29,8 @@ export class AppTest {
   public listen() {
     const app = this.getApp();
     if (! this.server) {
-      this.server = app.listen(9091);
-      this.listener = request(app);
+      this.server = app.run();
+      this.listener = request(app.getApp());
     }
 
     return this.listener;

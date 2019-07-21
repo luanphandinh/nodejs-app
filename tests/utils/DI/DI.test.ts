@@ -46,12 +46,14 @@ describe('DI', () => {
 
   it('should injectable class and resolve it', () => {
     const container = DI.getContainer();
-    const thor = container.get<Thor>(Thor.name);
-    const ironMan = container.get<IronMan>(IronMan.name);
+
     const avenger = container.get<Avenger>(Avenger.name);
-    expect(thor.say()).toEqual("Thor say: I'm Avenger!");
-    expect(ironMan.say()).toEqual("Iron Man say: I'm Avenger!");
     expect(avenger.thor.say()).toEqual("Thor say: I'm Avenger!");
     expect(avenger.ironMan.say()).toEqual("Iron Man say: I'm Avenger!");
+
+    const thor = container.get<Thor>(Thor.name);
+    const ironMan = container.get<IronMan>(IronMan.name);
+    expect(thor.say()).toEqual("Thor say: I'm Avenger!");
+    expect(ironMan.say()).toEqual("Iron Man say: I'm Avenger!");
   });
 });
